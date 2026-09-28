@@ -3,230 +3,275 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Astra - QDS Threat Detection Simulation</title>
+    <title>Quantum Astra - QDS Threat Detection System</title>
+    <meta name="description" content="Deterministic, non-AI cyber threat detection for Quantum Digital Signatures (QDS) using Bell states, quantum teleportation, and QBER thresholding.">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
     <div class="app-container">
         <!-- Top Navigation / Header -->
-        <header class="navbar">
+        <header class="navbar" role="banner">
             <div class="brand">
-                <div class="brand-logo">
+                <div class="brand-logo" aria-hidden="true">
                     <span class="atom-icon">⚛️</span>
                 </div>
                 <div class="brand-text">
                     <h1>QUANTUM ASTRA</h1>
-                    <span class="subtext">SIH 2026 | Problem Statement: SIH26141</span>
+                    <p class="subtext">SIH 2026 | Problem Statement: SIH26141</p>
                 </div>
             </div>
-            <div class="header-badges">
-                <span class="badge theme-badge">Blockchain & Cybersecurity</span>
-                <span class="badge non-ai-badge">Deterministic & Non-AI</span>
-                <span class="badge status-live"><span class="pulse-dot"></span> Simulation Ready</span>
+            <div class="header-badges" aria-label="System attributes">
+                <span class="badge theme-badge">Blockchain &amp; Cybersecurity</span>
+                <span class="badge non-ai-badge">Deterministic Rule-Based</span>
+                <span class="badge status-live"><span class="pulse-dot" aria-hidden="true"></span> System Ready</span>
             </div>
         </header>
 
-        <!-- Friendly Intro Card (ELI5) -->
-        <section class="intro-banner">
+        <!-- Inline Accessible Error Alert (Hidden by default) -->
+        <div id="errorAlert" class="error-alert" role="alert" aria-live="assertive" hidden>
+            <div class="error-content">
+                <span class="error-icon" aria-hidden="true">⚠️</span>
+                <div class="error-text">
+                    <strong id="errorTitle">Simulation Notice</strong>
+                    <p id="errorMessage">Unable to communicate with the simulation server.</p>
+                </div>
+            </div>
+            <div class="error-actions">
+                <button type="button" class="btn-retry" id="errorRetryBtn" onclick="runSimulation()">Try Again</button>
+                <button type="button" class="btn-dismiss" id="errorDismissBtn" onclick="dismissError()" aria-label="Dismiss error">✕</button>
+            </div>
+        </div>
+
+        <!-- Friendly Intro Card -->
+        <section class="intro-banner" aria-labelledby="introHeading">
             <div class="intro-content">
-                <h2>Quantum Digital Signature (QDS) Security Testbed</h2>
+                <h2 id="introHeading">Quantum Digital Signature (QDS) Security Testbed</h2>
                 <p>
-                    <strong>How it works in plain words:</strong> Alice signs a digital message using 
-                    <em>entangled twin particles</em> (Bell states). Because quantum particles cannot be copied 
-                    without disturbing them, any attacker who intercepts or tampers with the message leaves 
-                    an unmistakable physical trace (a jump in errors called <strong>QBER</strong>). 
-                    Our system detects these attacks instantly using pure math and physics—<strong>no black-box AI required!</strong>
+                    Alice signs digital records using <strong>entangled Bell pairs</strong>. 
+                    Because quantum states cannot be cloned without measurement disturbance (No-Cloning Theorem), 
+                    any channel tampering or eavesdropping introduces detectable error anomalies (<strong>QBER</strong>). 
+                    Our detector verifies signatures deterministically—<strong>without probabilistic AI/ML</strong>.
                 </p>
             </div>
-            <button class="btn-guide-toggle" id="toggleConceptsBtn" onclick="toggleConceptGuide()">
-                📖 Quantum Concepts Made Simple
+            <button type="button" class="btn-guide-toggle" id="toggleConceptsBtn" aria-expanded="false" aria-controls="conceptGuideDrawer" onclick="toggleConceptGuide()">
+                <span class="btn-guide-icon" aria-hidden="true">📖</span> Quantum Concepts Made Simple
             </button>
         </section>
 
-        <!-- Collapsible Simple Concept Guide -->
-        <section class="concept-guide-drawer" id="conceptGuideDrawer" style="display: none;">
+        <!-- Collapsible Accessible Concept Guide -->
+        <section class="concept-guide-drawer" id="conceptGuideDrawer" aria-labelledby="guideHeading" hidden>
+            <h3 id="guideHeading" class="sr-only">Quantum Concepts Explained</h3>
             <div class="concept-grid">
-                <div class="concept-card">
-                    <div class="card-icon">🎲</div>
-                    <h3>Bell State (Entanglement)</h3>
-                    <p class="analogy-label">Simple Analogy: Magic Dice</p>
+                <article class="concept-card">
+                    <div class="card-icon" aria-hidden="true">🎲</div>
+                    <h4>Bell State (Entanglement)</h4>
+                    <p class="analogy-label">Analogy: Twin Dice</p>
                     <p>Two particles linked across space. Whatever happens to one instantly reflects on the other, creating a private quantum bridge.</p>
-                </div>
-                <div class="concept-card">
-                    <div class="card-icon">🚀</div>
-                    <h3>Quantum Teleportation</h3>
-                    <p class="analogy-label">Simple Analogy: Blueprint Scanner</p>
-                    <p>Scanning a quantum state, destroying the original, and reconstructing an exact copy at the destination using classical correction bits.</p>
-                </div>
-                <div class="concept-card">
-                    <div class="card-icon">⚡</div>
-                    <h3>QBER (Error Rate)</h3>
-                    <p class="analogy-label">Simple Analogy: Phone Static Alarm</p>
-                    <p>Normally, fiber channels have &lt; 3% error. If an eavesdropper tries to read the quantum bits, the error jumps to 25%+, sounding the alarm!</p>
-                </div>
-                <div class="concept-card">
-                    <div class="card-icon">🛡️</div>
-                    <h3>Deterministic & Non-AI</h3>
-                    <p class="analogy-label">Simple Analogy: Mathematical Law</p>
-                    <p>AI models can make guesses or hallucinate. Our detector relies on strict mathematical thresholds and physical laws for 100% auditable certainty.</p>
-                </div>
+                </article>
+                <article class="concept-card">
+                    <div class="card-icon" aria-hidden="true">🚀</div>
+                    <h4>Quantum Teleportation</h4>
+                    <p class="analogy-label">Analogy: State Reconstruction</p>
+                    <p>Transmitting quantum information using pre-shared entanglement and classical Pauli correction bits without moving physical matter.</p>
+                </article>
+                <article class="concept-card">
+                    <div class="card-icon" aria-hidden="true">⚡</div>
+                    <h4>QBER (Quantum Bit Error Rate)</h4>
+                    <p class="analogy-label">Analogy: Disturbance Alarm</p>
+                    <p>Normally, channels exhibit minimal error (&lt; 3%). If an attacker intercepts qubits in flight, errors spike past 20%, tripping the alarm.</p>
+                </article>
+                <article class="concept-card">
+                    <div class="card-icon" aria-hidden="true">🛡️</div>
+                    <h4>Deterministic Detection</h4>
+                    <p class="analogy-label">Analogy: Cryptographic Rule</p>
+                    <p>Unlike AI models that hallucinate or require training data, physical thresholds and mathematical checks provide 100% auditable certainty.</p>
+                </article>
             </div>
         </section>
 
-        <!-- Main Workspace: Left Controls, Right Output -->
-        <main class="main-layout">
+        <!-- Main Workspace: Two-column on desktop, optimized linear flow on mobile -->
+        <main class="main-layout" id="mainContent">
             <!-- Left Panel: User-Defined Controls -->
-            <section class="panel control-panel">
+            <section class="panel control-panel" aria-labelledby="controlPanelHeading">
                 <div class="panel-header">
-                    <h2>1. User-Defined Configuration</h2>
-                    <span class="panel-tag">Interactive Controls</span>
+                    <h2 id="controlPanelHeading">Simulation Configuration</h2>
+                    <span class="panel-tag">Interactive</span>
                 </div>
 
-                <!-- Custom Message Input -->
-                <div class="form-group">
-                    <label for="messageInput">
-                        Digital Document / Message to Sign:
-                        <span class="tooltip" title="Type any text you want Alice to sign and Bob to verify.">ℹ️</span>
-                    </label>
-                    <textarea id="messageInput" rows="2" placeholder="e.g. Authorize Fund Transfer of ₹10,00,000 to Account #8491">Authorize Fund Transfer of ₹10,00,000 to Account #8491</textarea>
-                    
-                    <div class="preset-chips">
-                        <span class="chip-label">Quick Presets:</span>
-                        <button class="chip" onclick="setPresetMessage('Authorize Fund Transfer of ₹10,00,000 to Account #8491')">💰 Bank Wire</button>
-                        <button class="chip" onclick="setPresetMessage('CONFIDENTIAL: Deploy Emergency Firmware Patch #78-Beta')">🔒 Security Patch</button>
-                        <button class="chip" onclick="setPresetMessage('Voter ID #9281: Cast Vote for Candidate Alpha')">🗳️ E-Voting</button>
-                    </div>
-                </div>
+                <form id="simForm" onsubmit="event.preventDefault(); runSimulation();">
+                    <!-- Attack Vector Selector (Primary Action) -->
+                    <fieldset class="attack-selector-fieldset">
+                        <legend class="section-legend">1. Select Simulation Scenario</legend>
+                        <div class="attack-options" role="radiogroup" aria-label="Attack simulation scenario">
+                            <label class="attack-card" for="attack_none">
+                                <input type="radio" name="attack_type" id="attack_none" value="NONE" checked>
+                                <span class="custom-radio" aria-hidden="true"></span>
+                                <span class="attack-info">
+                                    <span class="attack-title">
+                                        <span class="status-indicator safe" aria-hidden="true">🟢</span>
+                                        Authentic Transmission
+                                    </span>
+                                    <span class="attack-desc">Honest Alice signs and sends properly. Expected verdict: <strong>ACCEPT</strong>.</span>
+                                </span>
+                            </label>
 
-                <!-- Sliders Grid -->
-                <div class="sliders-grid">
-                    <!-- Qubit Count -->
-                    <div class="slider-group">
-                        <div class="slider-header">
-                            <label for="qubitCountSlider">Signature Length (Qubits):</label>
-                            <span class="slider-val" id="qubitCountVal">16 Qubits</span>
+                            <label class="attack-card" for="attack_mitm">
+                                <input type="radio" name="attack_type" id="attack_mitm" value="MITM">
+                                <span class="custom-radio" aria-hidden="true"></span>
+                                <span class="attack-info">
+                                    <span class="attack-title">
+                                        <span class="status-indicator threat" aria-hidden="true">🕵️</span>
+                                        Channel Eavesdropping (MITM)
+                                    </span>
+                                    <span class="attack-desc">Attacker spies on qubits in flight. Waveform collapses, inducing a &sim;25% QBER spike.</span>
+                                </span>
+                            </label>
+
+                            <label class="attack-card" for="attack_forgery">
+                                <input type="radio" name="attack_type" id="attack_forgery" value="FORGERY">
+                                <span class="custom-radio" aria-hidden="true"></span>
+                                <span class="attack-info">
+                                    <span class="attack-title">
+                                        <span class="status-indicator threat" aria-hidden="true">✍️</span>
+                                        Signature Forgery
+                                    </span>
+                                    <span class="attack-desc">Attacker alters document text and injects counterfeit quantum signature states.</span>
+                                </span>
+                            </label>
+
+                            <label class="attack-card" for="attack_impersonation">
+                                <input type="radio" name="attack_type" id="attack_impersonation" value="IMPERSONATION">
+                                <span class="custom-radio" aria-hidden="true"></span>
+                                <span class="attack-info">
+                                    <span class="attack-title">
+                                        <span class="status-indicator threat" aria-hidden="true">🎭</span>
+                                        Sender Impersonation
+                                    </span>
+                                    <span class="attack-desc">Rogue sender pretends to be Alice without shared entangled Bell pairs.</span>
+                                </span>
+                            </label>
+
+                            <label class="attack-card" for="attack_replay">
+                                <input type="radio" name="attack_type" id="attack_replay" value="REPLAY">
+                                <span class="custom-radio" aria-hidden="true"></span>
+                                <span class="attack-info">
+                                    <span class="attack-title">
+                                        <span class="status-indicator threat" aria-hidden="true">🔄</span>
+                                        Replay Attack
+                                    </span>
+                                    <span class="attack-desc">Attacker re-submits a previously valid signature; caught by nonce &amp; timestamp freshness.</span>
+                                </span>
+                            </label>
                         </div>
-                        <input type="range" id="qubitCountSlider" min="8" max="32" step="4" value="16" oninput="updateSliderLabels()">
-                        <span class="slider-help">More qubits = higher cryptographic security</span>
-                    </div>
+                    </fieldset>
 
-                    <!-- Ambient Noise -->
-                    <div class="slider-group">
-                        <div class="slider-header">
-                            <label for="ambientNoiseSlider">Fiber Channel Noise:</label>
-                            <span class="slider-val" id="ambientNoiseVal">2%</span>
-                        </div>
-                        <input type="range" id="ambientNoiseSlider" min="0" max="15" step="1" value="2" oninput="updateSliderLabels()">
-                        <span class="slider-help">Natural background imperfections in fiber optics</span>
-                    </div>
-
-                    <!-- Threshold -->
-                    <div class="slider-group">
-                        <div class="slider-header">
-                            <label for="thresholdSlider">Security QBER Threshold:</label>
-                            <span class="slider-val" id="thresholdVal">11%</span>
-                        </div>
-                        <input type="range" id="thresholdSlider" min="5" max="25" step="1" value="11" oninput="updateSliderLabels()">
-                        <span class="slider-help">11% is the international quantum security limit</span>
-                    </div>
-                </div>
-
-                <!-- Attack Vector Selector -->
-                <div class="attack-selector-section">
-                    <label class="section-label">Select Simulation Scenario (Attack Injection):</label>
-                    <div class="attack-options">
-                        <div class="attack-card active" data-type="NONE" onclick="selectAttack('NONE')">
-                            <div class="attack-radio"></div>
-                            <div class="attack-info">
-                                <div class="attack-title">
-                                    <span class="icon">🟢</span>
-                                    <span>Legitimate Transmission</span>
-                                </div>
-                                <p class="attack-desc">Honest Alice signs and sends properly. Expected outcome: <strong>ACCEPT</strong>.</p>
-                            </div>
-                        </div>
-
-                        <div class="attack-card" data-type="MITM" onclick="selectAttack('MITM')">
-                            <div class="attack-radio"></div>
-                            <div class="attack-info">
-                                <div class="attack-title">
-                                    <span class="icon">🕵️</span>
-                                    <span>Channel Eavesdropping (MITM)</span>
-                                </div>
-                                <p class="attack-desc">Attacker spies on qubits in flight. Collapses states &amp; triggers ~25% QBER.</p>
-                            </div>
-                        </div>
-
-                        <div class="attack-card" data-type="FORGERY" onclick="selectAttack('FORGERY')">
-                            <div class="attack-radio"></div>
-                            <div class="attack-info">
-                                <div class="attack-title">
-                                    <span class="icon">✍️</span>
-                                    <span>Signature Forgery</span>
-                                </div>
-                                <p class="attack-desc">Attacker alters document payload and submits counterfeit quantum states.</p>
-                            </div>
-                        </div>
-
-                        <div class="attack-card" data-type="IMPERSONATION" onclick="selectAttack('IMPERSONATION')">
-                            <div class="attack-radio"></div>
-                            <div class="attack-info">
-                                <div class="attack-title">
-                                    <span class="icon">🎭</span>
-                                    <span>Sender Impersonation</span>
-                                </div>
-                                <p class="attack-desc">Rogue entity pretends to be Alice without pre-shared Bell pairs.</p>
-                            </div>
-                        </div>
-
-                        <div class="attack-card" data-type="REPLAY" onclick="selectAttack('REPLAY')">
-                            <div class="attack-radio"></div>
-                            <div class="attack-info">
-                                <div class="attack-title">
-                                    <span class="icon">🔄</span>
-                                    <span>Replay Attack</span>
-                                </div>
-                                <p class="attack-desc">Attacker captures an old valid signature and replays it 5 minutes later.</p>
-                            </div>
+                    <!-- Custom Message Input -->
+                    <div class="form-group message-group">
+                        <label for="messageInput">
+                            2. Digital Document / Message Payload:
+                        </label>
+                        <textarea id="messageInput" name="message" rows="2" maxlength="5000" placeholder="Type document text to sign...">Authorize Critical Fund Transfer of ₹10,00,000</textarea>
+                        
+                        <div class="preset-chips" role="group" aria-label="Preset message options">
+                            <span class="chip-label">Presets:</span>
+                            <button type="button" class="chip" onclick="setPresetMessage('Authorize Critical Fund Transfer of ₹10,00,000')">💰 Bank Wire</button>
+                            <button type="button" class="chip" onclick="setPresetMessage('CONFIDENTIAL: Deploy Emergency Patch #84-B')">🔒 Firmware</button>
+                            <button type="button" class="chip" onclick="setPresetMessage('Voter ID #9281: Cast Ballot for Candidate Alpha')">🗳️ E-Voting</button>
                         </div>
                     </div>
-                </div>
 
-                <!-- Run Button -->
-                <button class="btn-run" id="runSimBtn" onclick="runSimulation()">
-                    <span class="btn-icon">⚡</span> Run Quantum Simulation
-                </button>
+                    <!-- Collapsible Advanced Settings (Collapsed by default) -->
+                    <div class="accordion-container">
+                        <button type="button" class="disclosure-btn" id="advSettingsToggle" aria-expanded="false" aria-controls="advSettingsSection" onclick="toggleAdvancedSettings()">
+                            <span class="disclosure-title">
+                                <span class="gear-icon" aria-hidden="true">⚙️</span> Advanced Quantum Parameters
+                            </span>
+                            <span class="disclosure-arrow" id="advSettingsArrow" aria-hidden="true">▼</span>
+                        </button>
+
+                        <div class="accordion-content" id="advSettingsSection" hidden>
+                            <div class="sliders-grid">
+                                <!-- Qubit Count -->
+                                <div class="slider-group">
+                                    <div class="slider-header">
+                                        <label for="qubitCountSlider">Signature Length:</label>
+                                        <span class="slider-val" id="qubitCountVal">16 Qubits</span>
+                                    </div>
+                                    <input type="range" id="qubitCountSlider" min="8" max="32" step="4" value="16" oninput="updateSliderLabels()">
+                                    <span class="slider-help">Range: 8 to 32 entangled Bell pairs</span>
+                                </div>
+
+                                <!-- Ambient Noise -->
+                                <div class="slider-group">
+                                    <div class="slider-header">
+                                        <label for="ambientNoiseSlider">Fiber Channel Noise:</label>
+                                        <span class="slider-val" id="ambientNoiseVal">2%</span>
+                                    </div>
+                                    <input type="range" id="ambientNoiseSlider" min="0" max="15" step="1" value="2" oninput="updateSliderLabels()">
+                                    <span class="slider-help">Background optical attenuation / depolarizing error</span>
+                                </div>
+
+                                <!-- Threshold -->
+                                <div class="slider-group">
+                                    <div class="slider-header">
+                                        <label for="thresholdSlider">Security QBER Threshold:</label>
+                                        <span class="slider-val" id="thresholdVal">11%</span>
+                                    </div>
+                                    <input type="range" id="thresholdSlider" min="5" max="25" step="1" value="11" oninput="updateSliderLabels()">
+                                    <span class="slider-help">Configured QBER security threshold: 11%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Run Simulation Button -->
+                    <div class="action-row">
+                        <button type="submit" class="btn-run" id="runSimBtn">
+                            <span class="btn-icon" aria-hidden="true">⚡</span>
+                            <span id="runBtnLabel">Run Quantum Simulation</span>
+                        </button>
+                    </div>
+                </form>
             </section>
 
-            <!-- Right Panel: Threat Detection & Audit Results -->
-            <section class="panel results-panel">
+            <!-- Right Panel: Results & Threat Detection -->
+            <section class="panel results-panel" id="resultsSection" aria-labelledby="resultsHeading">
                 <div class="panel-header">
-                    <h2>2. Real-Time Detection &amp; Audit</h2>
+                    <h2 id="resultsHeading">Detection &amp; Audit Results</h2>
                     <span class="panel-tag status-tag" id="statusTag">Awaiting Execution</span>
                 </div>
 
-                <!-- Large Verdict Banner -->
-                <div class="verdict-banner" id="verdictBanner">
-                    <div class="verdict-icon" id="verdictIcon">⏳</div>
+                <!-- Hero Verdict Banner (Role status for assistive tech) -->
+                <div class="verdict-banner initial" id="verdictBanner" role="status" aria-live="polite">
+                    <div class="verdict-icon-container" aria-hidden="true">
+                        <span class="verdict-icon" id="verdictIcon">⏳</span>
+                    </div>
                     <div class="verdict-body">
-                        <div class="verdict-title" id="verdictTitle">Ready to Simulate</div>
-                        <div class="verdict-subtitle" id="verdictSubtitle">Select parameters on the left and click "Run Quantum Simulation"</div>
+                        <div class="verdict-status-pill" id="verdictPill">READY</div>
+                        <h3 class="verdict-title" id="verdictTitle">Ready to Simulate</h3>
+                        <p class="verdict-subtitle" id="verdictSubtitle">Select a scenario on the left and click "Run Quantum Simulation" to test the system.</p>
+                        
+                        <div class="verdict-meta-chips" id="verdictMetaChips" hidden>
+                            <span class="meta-chip" id="chipQber">QBER: --</span>
+                            <span class="meta-chip" id="chipThreshold">Threshold: --</span>
+                            <span class="meta-chip" id="chipErrors">Errors: --</span>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Top Metrics Row -->
-                <div class="metrics-row">
+                <div class="metrics-row" aria-label="Simulation Metrics">
                     <div class="metric-card">
                         <span class="metric-title">Measured QBER</span>
                         <div class="metric-val-group">
-                            <span class="metric-val" id="metricQber">0.0%</span>
-                            <span class="metric-limit" id="metricQberThreshold">/ 11.0% limit</span>
+                            <span class="metric-val" id="metricQber">--%</span>
+                            <span class="metric-limit" id="metricQberThreshold">/ 11% cutoff</span>
                         </div>
-                        <div class="mini-bar-bg">
+                        <div class="mini-bar-bg" aria-hidden="true">
                             <div class="mini-bar-fill" id="qberBarFill" style="width: 0%;"></div>
                         </div>
                     </div>
@@ -234,86 +279,98 @@
                     <div class="metric-card">
                         <span class="metric-title">Verification Speed</span>
                         <span class="metric-val highlight" id="metricSpeed">-- ms</span>
-                        <span class="metric-sub">Ultra-fast real-time check</span>
+                        <span class="metric-sub">Real-time check</span>
                     </div>
 
                     <div class="metric-card">
-                        <span class="metric-title">Detection Accuracy</span>
-                        <span class="metric-val" id="metricAccuracy">100%</span>
-                        <span class="metric-sub">Deterministic Guarantee</span>
+                        <span class="metric-title">Detection Method</span>
+                        <span class="metric-val text-sm" id="metricAccuracy">Deterministic</span>
+                        <span class="metric-sub">Rule-based verification</span>
                     </div>
 
                     <div class="metric-card">
                         <span class="metric-title">Bit Mismatches</span>
-                        <span class="metric-val" id="metricMismatches">0 / 16</span>
-                        <span class="metric-sub">Quantum errors detected</span>
-                    </div>
-                </div>
-
-                <!-- Security Checklist Pipeline -->
-                <div class="audit-section">
-                    <h3>🛡️ Security Verification Pipeline (Deterministic)</h3>
-                    <div class="checklist-grid" id="checklistContainer">
-                        <div class="check-item pending">
-                            <span class="check-badge">⏳</span>
-                            <div class="check-info">
-                                <strong>Replay Protection (Nonce)</strong>
-                                <p>Verifies nonce uniqueness to block re-transmission.</p>
-                            </div>
-                        </div>
-                        <div class="check-item pending">
-                            <span class="check-badge">⏳</span>
-                            <div class="check-info">
-                                <strong>Timestamp Freshness Window</strong>
-                                <p>Ensures signature was created within recent valid seconds.</p>
-                            </div>
-                        </div>
-                        <div class="check-item pending">
-                            <span class="check-badge">⏳</span>
-                            <div class="check-info">
-                                <strong>Payload SHA-256 Hash</strong>
-                                <p>Validates message digest integrity against document alteration.</p>
-                            </div>
-                        </div>
-                        <div class="check-item pending">
-                            <span class="check-badge">⏳</span>
-                            <div class="check-info">
-                                <strong>Quantum Bit Error Rate (QBER)</strong>
-                                <p>Compares measured error against physics threshold.</p>
-                            </div>
-                        </div>
+                        <span class="metric-val" id="metricMismatches">-- / --</span>
+                        <span class="metric-sub">Quantum disturbances</span>
                     </div>
                 </div>
 
                 <!-- Plain-English Explanation Box -->
                 <div class="explanation-box" id="explanationBox">
                     <div class="explanation-header">
-                        <span class="bulb-icon">💡</span>
-                        <h4>Plain-English Security Summary</h4>
+                        <span class="bulb-icon" aria-hidden="true">💡</span>
+                        <h4>Security Summary &amp; Analysis</h4>
                     </div>
                     <p id="plainExplanationText">
-                        Run a simulation scenario to view an easy-to-read explanation of what took place in the quantum channel.
+                        Run a scenario to see a plain-language explanation of what took place in the quantum channel.
                     </p>
                 </div>
 
-                <!-- Individual Qubit Measurement Visualizer -->
-                <div class="qubit-inspector-section">
-                    <div class="qubit-inspector-header">
-                        <h3>🔬 Multi-Basis Qubit Teleportation Inspector</h3>
-                        <span class="qubit-summary-badge" id="qubitSummaryBadge">16 States</span>
+                <!-- Security Verification Pipeline -->
+                <div class="audit-section" aria-labelledby="pipelineHeading">
+                    <h3 id="pipelineHeading">🛡️ Security Verification Pipeline</h3>
+                    <div class="checklist-grid" id="checklistContainer">
+                        <div class="check-item pending">
+                            <span class="check-badge" aria-hidden="true">⏳</span>
+                            <div class="check-info">
+                                <strong>Replay Protection (Nonce)</strong>
+                                <p>Verifies nonce uniqueness to prevent re-transmission.</p>
+                            </div>
+                        </div>
+                        <div class="check-item pending">
+                            <span class="check-badge" aria-hidden="true">⏳</span>
+                            <div class="check-info">
+                                <strong>Timestamp Freshness Window</strong>
+                                <p>Ensures signature was generated within fresh allowable window.</p>
+                            </div>
+                        </div>
+                        <div class="check-item pending">
+                            <span class="check-badge" aria-hidden="true">⏳</span>
+                            <div class="check-info">
+                                <strong>Payload SHA-256 Hash</strong>
+                                <p>Validates document content against tampering or alteration.</p>
+                            </div>
+                        </div>
+                        <div class="check-item pending">
+                            <span class="check-badge" aria-hidden="true">⏳</span>
+                            <div class="check-info">
+                                <strong>Quantum Bit Error Rate (QBER)</strong>
+                                <p>Compares measured error against configured security threshold.</p>
+                            </div>
+                        </div>
                     </div>
-                    <p class="qubit-help">Each card shows a quantum state teleported via Bell pairs and measured across X, Y, or Z bases:</p>
-                    <div class="qubit-grid" id="qubitGrid">
-                        <!-- Populated dynamically via app.js -->
+                </div>
+
+                <!-- Technical Details Accordion (Individual Qubit Measurements) -->
+                <div class="accordion-container technical-section">
+                    <div class="technical-summary-card">
+                        <div class="tech-summary-left">
+                            <span class="tech-icon" aria-hidden="true">🔬</span>
+                            <div>
+                                <strong>Multi-Basis Quantum State Measurements</strong>
+                                <p id="qubitSummaryText">Execute simulation to view individual qubit telemetry.</p>
+                            </div>
+                        </div>
+                        <button type="button" class="disclosure-btn qubit-toggle-btn" id="qubitToggleBtn" aria-expanded="false" aria-controls="qubitGridContainer" onclick="toggleQubitInspector()">
+                            <span id="qubitToggleLabel">View Details</span>
+                            <span class="disclosure-arrow" id="qubitToggleArrow" aria-hidden="true">▼</span>
+                        </button>
+                    </div>
+
+                    <div class="accordion-content" id="qubitGridContainer" hidden>
+                        <p class="qubit-help">Each qubit is teleported via Bell pairs and measured across canonical bases (X, Y, Z):</p>
+                        <div class="qubit-grid" id="qubitGrid" role="list" aria-label="Individual Qubit Measurements">
+                            <!-- Populated dynamically via safe DOM APIs -->
+                        </div>
                     </div>
                 </div>
             </section>
         </main>
 
         <!-- Footer -->
-        <footer class="app-footer">
+        <footer class="app-footer" role="contentinfo">
             <p>Smart India Hackathon 2026 | Team Quantam Astra | Problem Statement SIH26141</p>
-            <p class="footer-sub">Quantum-Inspired Threat Detection for Digital Signature Security (Zero AI/ML Dependencies)</p>
+            <p class="footer-sub">Quantum-Inspired Threat Detection for Digital Signature Security (Strictly Non-AI/ML)</p>
         </footer>
     </div>
 

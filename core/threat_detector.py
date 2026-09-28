@@ -152,12 +152,12 @@ class ThreatDetector:
         if qber > threshold:
             is_threat = True
             if threat_type == "NONE":
-                if qber >= 0.40:
+                if qber >= 0.50:
                     threat_type = "IMPERSONATION_OR_FORGERY"
                     reasons.append(f"Extreme error rate ({qber_percent:.1f}%): Counterfeit quantum states or unauthorized sender.")
                 else:
                     threat_type = "CHANNEL_MANIPULATION_EAVESDROPPING"
-                    reasons.append(f"Elevated QBER ({qber_percent:.1f}% > {threshold_percent:.1f}% threshold): Quantum eavesdropping detected.")
+                    reasons.append(f"Elevated QBER ({qber_percent:.1f}% > {threshold_percent:.1f}% threshold): Quantum channel tampering or eavesdropping detected.")
 
             checks.append({
                 "step": "Quantum Bit Error Rate (QBER)",

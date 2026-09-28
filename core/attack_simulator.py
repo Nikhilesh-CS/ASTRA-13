@@ -29,8 +29,9 @@ class AttackSimulator:
         for state in states:
             s = state.copy()
             if np.random.rand() < noise_rate:
-                # Random Pauli error (bit-flip or phase-flip)
-                gate = np.random.choice([X_GATE, Z_GATE, Y_GATE])
+                # Random Pauli error (bit-flip, phase-flip, or both)
+                pauli_gates = [X_GATE, Z_GATE, Y_GATE]
+                gate = pauli_gates[np.random.randint(len(pauli_gates))]
                 s = np.dot(gate, s)
             noisy_states.append(s)
         return noisy_states
